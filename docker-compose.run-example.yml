@@ -1,0 +1,20 @@
+version: '3.5'
+
+services:
+  test:
+    image: openjdk:11-jdk-slim
+
+    working_dir: /usr/src/app
+
+    volumes:
+        - .:/usr/src/app
+
+    command: bash -c './wait-for-it.sh -address=http://localstack:4571 -retry=1500 -timeout=120 -debug -- echo 'EXAMPLE WORKS''
+
+    depends_on:
+      - localstack
+
+    networks:
+      main:
+        aliases:
+          - test

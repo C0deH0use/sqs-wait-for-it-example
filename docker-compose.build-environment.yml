@@ -1,0 +1,33 @@
+version: '3.5'
+
+services:
+  localstack:
+    image: localstack/localstack:latest
+
+    ports:
+      - "4571:4571"
+      - "4576:4576"
+
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - DEBUG=true
+      - AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
+      - AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+      - AWS_DEFAULT_REGION=eu-west-1
+
+
+    volumes:
+      - "/tmp/localstack:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  fake-smtp:
+    image: digiplant/fake-smtp
+
+    networks:
+      main:
+        aliases:
+          - fake-smtp
+
+networks:
+  main:
+    driver: bridge
